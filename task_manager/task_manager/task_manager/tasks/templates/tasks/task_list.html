@@ -1,0 +1,59 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    To Do List
+{% endblock %}
+
+{% block content %}
+    <h1>To Do List</h1>
+
+    <!-- Sign Out Button in Top Right Corner -->
+    <div style="position: absolute; top: 20px; right: 20px;">
+        <a href="{% url 'logout' %}" class="btn btn-danger">Sign Out</a>
+    </div>
+
+    <!-- Buttons for completed tasks and adding a task -->
+    <div class="mb-3">
+        <a href="{% url 'completed_tasks' %}" class="btn btn-info">View Completed Tasks</a>
+        <a href="{% url 'add_task' %}" class="btn btn-success">Add Task</a>
+    </div>
+
+    <!-- Task List -->
+    <ul class="list-group">
+        {% for task in uncomplete_tasks %}
+        <li class="list-group-item">
+            {{ task.title }} | Due Date: {{ task.due_date }} | Category: {{ task.category }}
+            <a href="{% url 'edit_task' task.pk %}">
+                <button type="button" class="btn btn-secondary">Edit</button>
+            </a>
+            <form action="{% url 'complete_task' task.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Mark As Completed</button>
+            </form>
+            <form action="{% url 'delete_task' task.pk %}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>No Tasks Found</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Search and Sort -->
+    <div class="mt-3">
+        <form method="GET" action="{% url 'task_list' %}" class="form-inline">
+            <input type="text" name="search" class="form-control" placeholder="Search Tasks">
+            <select name="sort_by" class="form-control ml-2">
+                <option value="">Sort By</option>
+                <option value="due_date">Due Date (Asc)</option>
+                <option value="-due_date">Due Date (Desc)</option>
+                <option value="category">Category (Asc)</option>
+                <option value="-category">Category (Desc)</option>
+            </select>
+            <button type="submit" class="btn btn-primary ml-2">Search</button>
+        </form>
+    </div>
+
+{% endblock %}
+
