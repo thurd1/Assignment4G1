@@ -1,0 +1,39 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+    Completed Tasks
+{% endblock %}
+
+{% block content %}
+    <h1>Completed Tasks</h1>
+    <a href="{% url 'task_list' %}">
+        <button type="button" class="btn btn-secondary">Back to To Do List</button>
+    </a>
+    <ul class="list-group">
+        {% for task in completed_tasks %}
+        <li class="list-group-item">
+            {{ task.title }} | Due Date: {{ task.due_date }} | Category: {{ task.category }}
+            <a href="{% url 'edit_task' task.pk %}">
+                <button type="button" class="btn btn-secondary">Edit</button>
+            </a>
+            <form action="{% url 'uncomplete_task' task.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning">Mark As Incomplete</button>
+            </form>
+            <form action="{% url 'delete_task' task.pk %}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>No completed tasks</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this task?");
+        }
+    </script>
+{% endblock %}
+
