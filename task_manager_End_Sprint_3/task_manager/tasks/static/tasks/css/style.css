@@ -1,0 +1,32 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+h2,
+h3 {
+    font-family: 'Georgia', sans-serif;
+    font-weight: 500;
+}
+li {
+    font-size: 25px;
+
+}
+
+button {
+    font-family: 'Roboto Sans', sans-serif;
+}
+.top-bar {
+    background-color: rgb(0, 115, 152);
+    height:60px;
+    align-items: center;
+    
+}
+.top-bar img {
+    width: 150px; 
+    height: auto; 
+}
